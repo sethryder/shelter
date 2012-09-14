@@ -2,8 +2,11 @@
 
 class Top_Menu
 {
+    private $server;
+
     public function __construct()
     {
+        $this->server = new Server;
         $this->topMenu();
     }
 
@@ -29,10 +32,9 @@ class Top_Menu
                     $create_menu = new Create_Menu;
                     break;
                 case 'list':
-                    $this->server->listServers(100, 0);
+                    $this->server->list_servers(100, 0);
                     break;
                 case 'tools':
-                    print_r($this->server->listConfigs());
                     break;
                 case 'quit':
                     break 2;
