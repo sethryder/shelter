@@ -23,12 +23,13 @@ class Top_Menu
         while (true)
         {
             \cli\line();
-            $choice = \cli\menu($menu, null, 'Choose an example');
+            $choice = CLI::menu($menu);
             \cli\line();
 
             switch ($choice)
             {
                 case 'create':
+                    CLI::clear_screen();
                     $create_menu = new Create_Menu;
                     break;
                 case 'list':

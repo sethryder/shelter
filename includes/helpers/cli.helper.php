@@ -15,10 +15,10 @@ class CLI
         echo exec('clear');
     }
 
-    public static function menu($options)
+    public static function menu($options, $message='Select an option')
     {
         \cli\line();
-        $choice = \cli\menu($options, null, 'Select an option');
+        $choice = \cli\menu($options, null, $message);
         \cli\line();
 
         return $choice;

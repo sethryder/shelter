@@ -28,12 +28,15 @@ class Create_Menu
             switch ($choice)
             {
                 case 'single':
+                    CLI::clear_screen();
                     $this->single_create_menu();
                     break;
                 case 'back':
+                    CLI::clear_screen();
                     $this->topMenu();
                     break;
                 case 'bulk':
+                    CLI::clear_screen();
                     $this->bulk_create_menu();
                     break;
             }
@@ -67,6 +70,7 @@ class Create_Menu
 
         while (true)
         {
+            CLI::clear_screen();
             $region = CLI::menu($regions);
             break;
         }
@@ -90,6 +94,7 @@ class Create_Menu
 
         while (true)
         {
+            CLI::clear_screen();
             $config = CLI::menu($configs);
             break;
         }
@@ -101,18 +106,47 @@ class Create_Menu
         foreach ($raw_templates['items'] as $template)
         {
             $template_id = $template['id'];
+            $template_name = $template['name'];
             if (in_array($region, $template_zones["$template_id"]))
             {
-                $templates["$template_id"] = $template['description'];
+                $templates["$template_name"] = $template['description'];
             }
         }
 
         while (true)
         {
+            CLI::clear_screen();
             $template = CLI::menu($templates);
             break;
         }
 
+        CLI::clear_screen();
+        $hostname = \cli\prompt('Hostname', ServerHelper::randomHostname(API::get_domain(), 'none'), $marker = ': ');
+        $password = \cli\prompt('Password', $default = false, $marker = ': ');
+        $ip_count = \cli\prompt('Number of IPs', 1, $marker = ': ');
+        $backup_enabled = \cli\choose('Enable Backups', $choices = 'yn', $default = 'n');
+
+        if ($backup_enabled == 'n')
+        {
+            $backup = 0;
+        }
+        else
+        {
+            $backup = 1;
+        }
+
+        $result = $this->server->create_server($hostname, $region, $template, $config, $password, $ip_count, $backup);
+
+        if ($result)
+        {
+            CLI::clear_screen();
+            \cli\line('%s is creating!', $result['domain']);
+        }
+        else
+        {
+            print_r($result);
+            \cli\err('%s was unable to create', $hostname);
+        }
     }
 
     public function bulk_create_menu()

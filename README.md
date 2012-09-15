@@ -9,11 +9,11 @@ Shelter is currently under heavy development, so many things may be broken and w
 
 Currently Supported
 --------------------
+- Single Creates
 - Bulk Creates
 
 Coming Soon / Planned
 --------------------
-- Single Creates
 - Reboots
 - Destroy (Possibly Mass Destroy)
 - Backup Create / Restores

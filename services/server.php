@@ -52,7 +52,11 @@ class Server extends API
 
         if (isset($result['errors']))
         {
-
+            return false;
+        }
+        else
+        {
+            return $result;
         }
     }
 

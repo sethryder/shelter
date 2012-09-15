@@ -13,7 +13,15 @@ class ServerHelper
             $i++;
         }
 
-        $hostname = $rand.'.'.$prefix.'.'.$base;
+        if ($prefix == 'none')
+        {
+            $hostname = $rand.'.'.$base;
+        }
+        else
+        {
+            $hostname = $rand.'.'.$prefix.'.'.$base;
+        }
+
         return $hostname;
 
     }
