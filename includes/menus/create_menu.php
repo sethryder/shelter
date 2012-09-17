@@ -144,7 +144,6 @@ class Create_Menu
         }
         else
         {
-            print_r($result);
             \cli\err('%s was unable to create', $hostname);
         }
     }
@@ -153,7 +152,8 @@ class Create_Menu
     {
         $menu = array(
             'linux' => 'Linux',
-            'windows' => 'Windows'
+            'windows' => 'Windows',
+            'back' => 'Back'
         );
 
         while (true)
@@ -168,6 +168,9 @@ class Create_Menu
                 case 'windows':
                     $os = 'windows';
                     break;
+                case 'back':
+                    \cli\clear();
+                    $this->top_create_menu();
             }
 
             $count = \cli\prompt('How many instances', 1, ':');
@@ -184,15 +187,38 @@ class Create_Menu
             {
                 $hostname = ServerHelper::randomHostname(API::get_domain(), 'linux');
                 $password = ServerHelper::generatePassword(12, 9);
+                \cli\line();
 
                 if ($os == 'linux')
                 {
                     shuffle($this->bulk_linux_templates);
-                    $this->server->create_server($hostname, 12, $this->bulk_linux_templates[0], 114, $password);
+                    $result = $this->server->create_server($hostname, 12, $this->bulk_linux_templates[0], 114, $password);
+
+                    if ($result)
+                    {
+                        \cli\line('%GYour server '.$result['domain']. ' is now creating.');
+                        \cli\line();
+                    }
+                    else
+                    {
+                        \cli\line('%RUnable to create server.');
+                        \cli\line();
+                    }
                 }
                 elseif ($os == 'windows')
                 {
-                    $this->server->create_server($hostname, 12, 'WINDOWS_2008_UNMANAGED', 3, $password, 1, 0);
+                    $result = $this->server->create_server($hostname, 12, 'WINDOWS_2008_UNMANAGED', 3, $password, 1, 0);
+
+                    if ($result)
+                    {
+                        \cli\line('%GYour server '.$result['domain']. ' is now creating.');
+                        \cli\line();
+                    }
+                    else
+                    {
+                        \cli\line('%RUnable to create server.');
+                        \cli\line();
+                    }
                 }
 
                 $i++;
