@@ -11,10 +11,10 @@ Currently Supported
 --------------------
 - Single Creates
 - Bulk Creates
+- Reboots
 
 Coming Soon / Planned
 --------------------
-- Reboots
 - Destroy (Possibly Mass Destroy)
 - Backup Create / Restores
 - Resizes

@@ -122,9 +122,9 @@ class Create_Menu
 
         CLI::clear_screen();
         $hostname = \cli\prompt('Hostname', ServerHelper::randomHostname(API::get_domain(), 'none'), $marker = ': ');
-        $password = \cli\prompt('Password', $default = false, $marker = ': ');
+        $password = \cli\prompt('Password', false, $marker = ': ');
         $ip_count = \cli\prompt('Number of IPs', 1, $marker = ': ');
-        $backup_enabled = \cli\choose('Enable Backups', $choices = 'yn', $default = 'n');
+        $backup_enabled = \cli\choose('Enable Backups', 'yn', $default = 'n');
 
         if ($backup_enabled == 'n')
         {

@@ -10,21 +10,22 @@ class Server extends API
 
         $servers = $this->call('Storm/Server/list', $params);
 
-        $headers = array('UID', 'Hostname', 'IP', 'Config', 'Template');
-
         $data = array();
+
+        $i = 1;
+
         foreach ($servers['items'] as $server)
         {
-            $uid = $server['uniq_id'];
+            $data["$i"][] = $server['uniq_id'];
+            $data["$i"][] = $server['domain'];
+            $data["$i"][] = $server['ip'];
+            $data["$i"][] = $server['config_description'];
+            $data["$i"][] = $server['template_description'];
 
-            $data["$uid"][] = $uid;
-            $data["$uid"][] = $server['domain'];
-            $data["$uid"][] = $server['ip'];
-            $data["$uid"][] = $server['config_description'];
-            $data["$uid"][] = $server['template_description'];
+            $i++;
         }
 
-        CLI::output_table($headers, $data);
+        return $data;
     }
 
     public function create_server($domain, $zone, $template, $config, $password=1, $ip_count=1, $backup=1, $backup_plan='quota', $backup_quota=100, $bandwidth=0)
@@ -49,6 +50,25 @@ class Server extends API
         );
 
         $result = $this->call('Storm/Server/create', $params);
+
+        if (isset($result['errors']))
+        {
+            return false;
+        }
+        else
+        {
+            return $result;
+        }
+    }
+
+    public function reboot_server($uid, $force=false)
+    {
+        $params = array(
+            'uniq_id' => $uid,
+            'force' => $force
+        );
+
+        $result = $this->call('Storm/Server/reboot', $params);
 
         if (isset($result['errors']))
         {

@@ -21,4 +21,5 @@ require 'services/network.php';
 #Menus
 require 'includes/menus/top_menu.php';
 require 'includes/menus/create_menu.php';
+require 'includes/menus/control_menu.php';
 require 'includes/menus/tools_menu.php';

@@ -33,7 +33,12 @@ class Top_Menu
                     $create_menu = new Create_Menu;
                     break;
                 case 'list':
-                    $this->server->list_servers(100, 0);
+                    $headers = array('UID', 'Hostname', 'IP', 'Config', 'Template');
+                    $servers = $this->server->list_servers(100, 0);
+                    CLI::output_table($headers, $servers);
+                    break;
+                case 'control':
+                    new Control_Menu;
                     break;
                 case 'tools':
                     break;
