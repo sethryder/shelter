@@ -10,11 +10,6 @@ class CLI
         $table->display();
     }
 
-    public static function clear_screen()
-    {
-        echo exec('clear');
-    }
-
     public static function menu($options, $message='Select an option')
     {
         \cli\line();

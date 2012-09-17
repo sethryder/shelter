@@ -9,6 +9,7 @@ require 'includes/cli/cli.php';
 \cli\register_autoload();
 
 #Helpers
+require 'includes/helpers/exception.helper.php';
 require 'includes/helpers/cli.helper.php';
 require 'includes/helpers/help.helper.php';
 require 'includes/helpers/server.helper.php';

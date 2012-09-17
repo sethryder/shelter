@@ -168,3 +168,11 @@ function choose( $question, $choice = 'yn', $default = 'n' ) {
 function menu( $items, $default = false, $title = 'Choose an item' ) {
 	return \cli\Streams::menu( $items, $default, $title );
 }
+
+/**
+ * Clears the screen using the exec() function.
+ */
+function clear()
+{
+    echo exec('clear');
+}

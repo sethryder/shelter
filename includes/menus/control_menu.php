@@ -8,7 +8,7 @@ class Control_Menu
     public function __construct()
     {
         $this->server = new Server;
-        CLI::clear_screen();
+        \cli\clear();
         $this->server_selection_menu();
     }
 
@@ -36,7 +36,7 @@ class Control_Menu
 
         $server = $servers["$choice"];
 
-        CLI::clear_screen();
+        \cli\clear();
 
         $this->server_control_menu($server);
 

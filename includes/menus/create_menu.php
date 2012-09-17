@@ -28,15 +28,15 @@ class Create_Menu
             switch ($choice)
             {
                 case 'single':
-                    CLI::clear_screen();
+                    \cli\clear();
                     $this->single_create_menu();
                     break;
                 case 'back':
-                    CLI::clear_screen();
+                    \cli\clear();
                     $this->topMenu();
                     break;
                 case 'bulk':
-                    CLI::clear_screen();
+                    \cli\clear();
                     $this->bulk_create_menu();
                     break;
             }
@@ -70,7 +70,7 @@ class Create_Menu
 
         while (true)
         {
-            CLI::clear_screen();
+            \cli\clear();
             $region = CLI::menu($regions);
             break;
         }
@@ -94,7 +94,7 @@ class Create_Menu
 
         while (true)
         {
-            CLI::clear_screen();
+            \cli\clear();
             $config = CLI::menu($configs);
             break;
         }
@@ -115,12 +115,12 @@ class Create_Menu
 
         while (true)
         {
-            CLI::clear_screen();
+            \cli\clear();
             $template = CLI::menu($templates);
             break;
         }
 
-        CLI::clear_screen();
+        \cli\clear();
         $hostname = \cli\prompt('Hostname', ServerHelper::randomHostname(API::get_domain(), 'none'), $marker = ': ');
         $password = \cli\prompt('Password', false, $marker = ': ');
         $ip_count = \cli\prompt('Number of IPs', 1, $marker = ': ');
@@ -139,7 +139,7 @@ class Create_Menu
 
         if ($result)
         {
-            CLI::clear_screen();
+            \cli\clear();
             \cli\line('%s is creating!', $result['domain']);
         }
         else

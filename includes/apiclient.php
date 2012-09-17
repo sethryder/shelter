@@ -4,7 +4,6 @@
 #       can be used with other kinds of APIs
 class API_Client
 {
-
     private $host = '';
     private $user = '';
     private $pass = '';
@@ -16,8 +15,10 @@ class API_Client
         $this->user = $username;
         $this->pass = $password;
         $this->assoc = $assoc;
+
+        set_exception_handler(array('Exception_Handler', 'api_exception_handler'));
     }
-    
+
     public function call($path, $args = null, $decode=TRUE)
     {
         $postdata = $args ? json_encode($args) : '{}';
@@ -39,12 +40,18 @@ class API_Client
             curl_close($ch);
             throw new Exception('cURL error: ' . $errtxt);
         }
-        if($http_status != "200")
+
+        switch ($http_status)
         {
-            $errtxt = curl_error($ch);
-            curl_close($ch);
-            throw new Exception('HTTP error: ' . $http_status . '| Result: ' . $raw_result);
+            case 200:
+                //Everything is good.
+                break;
+            case 401:
+                throw new Exception('Invalid API User. Please make sure your API user is configured properly.', $http_status);
+            default:
+                throw new Exception('Unknown API error', $http_status);
         }
+
         curl_close($ch);
         $result = $decode ? json_decode($raw_result, $this->assoc) : $raw_result;
         if ($result == null)
