@@ -196,12 +196,12 @@ class Create_Menu
 
                     if ($result)
                     {
-                        \cli\line('%GYour server '.$result['domain']. ' is now creating.');
+                        \cli\line('%GYour server '.$result['domain']. ' is now creating.%n');
                         \cli\line();
                     }
                     else
                     {
-                        \cli\line('%RUnable to create server.');
+                        \cli\line('%RUnable to create server.%n');
                         \cli\line();
                     }
                 }
@@ -211,12 +211,12 @@ class Create_Menu
 
                     if ($result)
                     {
-                        \cli\line('%GYour server '.$result['domain']. ' is now creating.');
+                        \cli\line('%GYour server '.$result['domain']. ' is now creating.%n');
                         \cli\line();
                     }
                     else
                     {
-                        \cli\line('%RUnable to create server.');
+                        \cli\line('%RUnable to create server.%n');
                         \cli\line();
                     }
                 }
