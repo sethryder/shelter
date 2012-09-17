@@ -11,19 +11,19 @@ Currently Supported
 --------------------
 - Single Creates
 - Bulk Creates
+- Resizes
 - Reboots
 - Destroy
 
 Coming Soon / Planned
 --------------------
-- Resizes
 - Backup Create / Restores
 - Image Creation / Create From Image
+- Re-image
 - Clones
 - Attach/Detach Private Network
 - Add/Remove Public IPs
 - Firewall Management
-
 
 License
 --------------------

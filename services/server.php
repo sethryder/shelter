@@ -2,8 +2,6 @@
 
 class Server extends API
 {
-    private $server;
-
     public function list_servers($limit=10, $offset=0)
     {
         $params = array('limit' => $limit, 'offset' => $offset);
@@ -28,6 +26,25 @@ class Server extends API
         return $data;
     }
 
+    public function server_details($uid)
+    {
+        $params = array(
+            'uniq_id' => $uid
+        );
+
+        $result = $this->call('Storm/Server/details', $params);
+
+        if (isset($result['errors']))
+        {
+            return false;
+        }
+        else
+        {
+            return $result;
+        }
+
+     }
+
     public function create_server($domain, $zone, $template, $config, $password=1, $ip_count=1, $backup=1, $backup_plan='quota', $backup_quota=100, $bandwidth=0)
     {
 
@@ -50,6 +67,26 @@ class Server extends API
         );
 
         $result = $this->call('Storm/Server/create', $params);
+
+        if (isset($result['errors']))
+        {
+            return false;
+        }
+        else
+        {
+            return $result;
+        }
+    }
+
+    public function resize_server($uid, $config_id, $skip_fs_resize=false)
+    {
+        $params = array(
+            'uniq_id' => $uid,
+            'config_id' => $config_id,
+            'skip_fs_resize' => $skip_fs_resize
+        );
+
+        $result = $this->call('Storm/Server/resize', $params);
 
         if (isset($result['errors']))
         {

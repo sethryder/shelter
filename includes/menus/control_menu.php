@@ -50,6 +50,7 @@ class Control_Menu
         $menu = array(
             'reboot' => 'Reboot',
             'reboot_force' => 'Force Reboot',
+            'resize' => 'Resize',
             'destroy' => 'Destroy',
             'back' => 'Back',
             'top' => 'Top Menu'
@@ -66,14 +67,14 @@ class Control_Menu
 
                     if ($result)
                     {
-                        cli\line('%GServer rebooted.%n');
-                        cli\line();
+                        \cli\line('%GServer rebooted.%n');
+                        \cli\line();
                         $this->server_control_menu($server);
                     }
                     else
                     {
-                        cli\line('%RUnable to reboot server.%n');
-                        cli\line();
+                        \cli\line('%RUnable to reboot server.%n');
+                        \cli\line();
                         $this->server_control_menu($server);
                     }
 
@@ -83,16 +84,19 @@ class Control_Menu
 
                     if ($result)
                     {
-                        cli\line('%GServer forcefully rebooted.%n');
-                        cli\line();
+                        \cli\line('%GServer forcefully rebooted.%n');
+                        \cli\line();
                         $this->server_control_menu($server);
                     }
                     else
                     {
-                        cli\line('%RUnable to reboot server.%n');
-                        cli\line();
+                        \cli\line('%RUnable to reboot server.%n');
+                        \cli\line();
                         $this->server_control_menu($server);
                     }
+                    break;
+                case 'resize':
+                    $this->server_resize($server);
                     break;
                 case 'destroy':
                     $this->server_destroy_menu($server);
@@ -137,6 +141,66 @@ class Control_Menu
         {
             \cli\line();
             \cli\err('%RInvalid confirmation.%n');
+            \cli\line();
+            $this->server_control_menu($server);
+        }
+    }
+
+    public function server_resize($server)
+    {
+        $details = $this->server->server_details($server[1]);
+        $raw_configs = $this->server->list_configs();
+        $region = $details['zone']['id'];
+        $current_config = $details['config_id'];
+
+        foreach ($raw_configs['items'] as $config)
+        {
+            $config_id = $config['id'];
+            $configs_disk["$config_id"] = $config['disk'];
+
+            if ($config['available'] == 1 && $config['zone_availability']["$region"] == 1 && $config['id'] != $details['config_id'])
+            {
+                $config_id = $config['id'];
+                $config_description = $config['description'];
+                $config_vcpu = $config['vcpu'];
+                $config_memory = $config['memory'];
+                $config_disk = $config['disk'];
+
+                $configs["$config_id"] = $config_description.' / CPU Cores: '.$config_vcpu.' / Memory: '.$config_memory.' MB / Disk: '.$config_disk.' GB';
+            }
+        }
+
+        while (true)
+        {
+            \cli\clear();
+            \cli\out('You have selected to resize: ' . $server[2]);
+            \cli\line();
+            $config = CLI::menu($configs, 'Select a config');
+            break;
+        }
+
+        if ($configs_disk["$current_config"] < $configs_disk["$config"])
+        {
+            \cli\line();
+            $resize_filesystem = \cli\choose('Resize filesystem?', 'yn', 'y');
+            \cli\line();
+        }
+
+        $resize_filesystem = ($resize_filesystem == y) ? true : false;
+
+        $result = $this->server->resize_server($server[1], $config, $resize_filesystem);
+
+        if ($result)
+        {
+            \cli\clear();
+            \cli\line('%GYour server '.$server[2].' is resizing.%n');
+            \cli\line();
+            $this->server_control_menu($server);
+        }
+        else
+        {
+            \cli\clear();
+            \cli\line('%RUnable to resize '.$server[2].'.%n');
             \cli\line();
             $this->server_control_menu($server);
         }
