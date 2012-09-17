@@ -12,12 +12,12 @@ Currently Supported
 - Single Creates
 - Bulk Creates
 - Reboots
+- Destroy
 
 Coming Soon / Planned
 --------------------
-- Destroy (Possibly Mass Destroy)
-- Backup Create / Restores
 - Resizes
+- Backup Create / Restores
 - Image Creation / Create From Image
 - Clones
 - Attach/Detach Private Network

@@ -133,4 +133,27 @@ class Server extends API
 
         return $configs;
     }
+
+    public function destroy_server($uid, $confirm=false)
+    {
+        if (!$confirm)
+        {
+            return false;
+        }
+
+        $params = array(
+            'uniq_id' => $uid
+        );
+
+        $result = $this->call('Storm/Server/destroy', $params);
+
+        if (isset($result['errors']))
+        {
+            return false;
+        }
+        else
+        {
+            return $result;
+        }
+    }
 }

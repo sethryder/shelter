@@ -29,10 +29,12 @@ class Top_Menu
             switch ($choice)
             {
                 case 'create':
-                    CLI::clear_screen();
-                    $create_menu = new Create_Menu;
+                    \cli\clear();
+                    new Create_Menu;
                     break;
                 case 'list':
+                    \cli\clear();
+                    \cli\line('Server List:');
                     $headers = array('UID', 'Hostname', 'IP', 'Config', 'Template');
                     $servers = $this->server->list_servers(100, 0);
                     CLI::output_table($headers, $servers);

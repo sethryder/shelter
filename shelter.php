@@ -6,6 +6,6 @@ API::config('https://api.stormondemand.com/1.0/', 'username', 'password', 'base-
 
 if (!isset($argv[1]))
 {
-    CLI::clear_screen();
+    \cli\clear();
     new Top_Menu;
 }

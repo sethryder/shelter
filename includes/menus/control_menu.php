@@ -3,7 +3,6 @@
 class Control_Menu
 {
     private $server;
-    private $selected_server;
 
     public function __construct()
     {
@@ -26,12 +25,13 @@ class Control_Menu
         \cli\line();
 
         $choice = \cli\prompt('Select Server ID', false, $marker = ': ');
+        \cli\line();
 
         if (!array_key_exists($choice, $servers))
         {
             \cli\err('Invalid ID!');
             \cli\line();
-            $this->top_control_menu();
+            $this->server_selection_menu();
         }
 
         $server = $servers["$choice"];
@@ -50,7 +50,9 @@ class Control_Menu
         $menu = array(
             'reboot' => 'Reboot',
             'reboot_force' => 'Force Reboot',
-            'back' => 'Back'
+            'destroy' => 'Destroy',
+            'back' => 'Back',
+            'top' => 'Top Menu'
         );
 
         while (true)
@@ -64,13 +66,13 @@ class Control_Menu
 
                     if ($result)
                     {
-                        cli\line('%GServer rebooted!%n');
+                        cli\line('%GServer rebooted.%n');
                         cli\line();
                         $this->server_control_menu($server);
                     }
                     else
                     {
-                        cli\line('%RUnable to reboot server!%n');
+                        cli\line('%RUnable to reboot server.%n');
                         cli\line();
                         $this->server_control_menu($server);
                     }
@@ -81,23 +83,62 @@ class Control_Menu
 
                     if ($result)
                     {
-                        cli\line('%GServer forcefully rebooted!$n');
+                        cli\line('%GServer forcefully rebooted.%n');
                         cli\line();
                         $this->server_control_menu($server);
                     }
                     else
                     {
-                        cli\line('%RUnable to reboot server!%n');
+                        cli\line('%RUnable to reboot server.%n');
                         cli\line();
                         $this->server_control_menu($server);
                     }
-
+                    break;
+                case 'destroy':
+                    $this->server_destroy_menu($server);
                     break;
                 case 'back':
                     $this->server_selection_menu();
                     break;
+                case 'top':
+                    new Top_Menu;
             }
         }
     }
 
+    public function server_destroy_menu($server)
+    {
+        \cli\out('You have selected to destroy: ' . $server[2]);
+        \cli\line();
+        \cli\line();
+        $confirm = \cli\prompt('Please type "DESTROY" to confirm', false, ': ');
+
+        if (strtolower($confirm) == 'destroy' || strtolower($confirm) == 'detroit')
+        {
+            $result = $this->server->destroy_server($server[1], true);
+
+            if ($result)
+            {
+                \cli\line();
+                \cli\line('%GYour server is destroying now.%n');
+                \cli\line();
+                \cli\prompt('Hit enter to return to the main menu.', 'Enter', '');
+                \cli\clear();
+                new Top_Menu;
+            }
+            else
+            {
+                \cli\line();
+                \cli\err('%RUnable to destroy server.');
+                $this->server_control_menu($server);
+            }
+        }
+        else
+        {
+            \cli\line();
+            \cli\err('%RInvalid confirmation.%n');
+            \cli\line();
+            $this->server_control_menu($server);
+        }
+    }
 }

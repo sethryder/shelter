@@ -33,7 +33,7 @@ class Create_Menu
                     break;
                 case 'back':
                     \cli\clear();
-                    $this->topMenu();
+                    new Top_Menu;
                     break;
                 case 'bulk':
                     \cli\clear();
